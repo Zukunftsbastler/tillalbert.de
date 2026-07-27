@@ -1,0 +1,53 @@
+# Netlify-Konfiguration für tillalbert.de
+#
+# Statische Seite ohne Build-Schritt: Netlify liefert die Dateien aus dem
+# Repository-Wurzelverzeichnis unverändert aus.
+
+[build]
+  publish = "."
+  command = ""
+
+# Einstiegspunkt.
+# Die Seite heißt TillAlbert.dc.html (Quellformat von Claude Design), nicht
+# index.html. Ohne diese Regel liefert Netlify unter "/" einen 404.
+# status = 200 ist ein Rewrite, kein Redirect: Die Adresse bleibt sauber
+# auf "/" stehen, statt auf den Dateinamen umzuspringen.
+[[redirects]]
+  from = "/"
+  to = "/TillAlbert.dc.html"
+  status = 200
+
+# Schriften und Programmbibliotheken sind versioniert bzw. inhaltlich stabil
+# und dürfen dauerhaft zwischengespeichert werden.
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Die Seite selbst soll sich ändern dürfen, ohne dass Besucher eine alte
+# Fassung sehen.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), camera=(), microphone=(), payment=(), usb=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+# Bewusst keine Content-Security-Policy:
+# support.js wertet den Komponenten-Code zur Laufzeit über Babel aus. Eine CSP
+# müsste dafür 'unsafe-eval' und 'unsafe-inline' erlauben und wäre damit
+# weitgehend wirkungslos — eine strengere Regel würde die Seite schlicht
+# lahmlegen. Falls die Seite später zu statischem HTML vorkompiliert wird,
+# lässt sich hier eine echte CSP nachrüsten.

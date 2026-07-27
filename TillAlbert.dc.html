@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Laufzeit-Bibliotheken lokal ausliefern statt von unpkg.com (US-CDN).
+     Verhindert, dass beim Seitenaufruf die IP-Adresse der Besucher an einen Dritten
+     uebertragen wird. Muss vor support.js stehen. Dateien in ./vendor/ sind
+     unveraendert und gegen die SRI-Hashes aus support.js geprueft. -->
+<script>
+  window.__resources = {
+    "https://unpkg.com/react@18.3.1/umd/react.production.min.js": "./vendor/react-18.3.1.production.min.js",
+    "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "./vendor/react-dom-18.3.1.production.min.js",
+    "https://unpkg.com/@babel/standalone@7.29.0/babel.min.js": "./vendor/babel-standalone-7.29.0.min.js"
+  };
+</script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preload" href="./fonts/ibmplexsans-latin.woff2" as="font" type="font/woff2" crossorigin="" />
+<link rel="preload" href="./fonts/robotoslab-latin.woff2" as="font" type="font/woff2" crossorigin="" />
+<style>
+  /* Selbst gehostete Webfonts — es werden keine Anfragen an Google Fonts o. ä. gestellt.
+     Roboto Slab: Apache License 2.0 · IBM Plex Sans/Mono: SIL Open Font License 1.1 */
+  @font-face { font-family: 'Roboto Slab'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('./fonts/robotoslab-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: 'Roboto Slab'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('./fonts/robotoslab-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  @font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 100 700; font-display: swap; src: url('./fonts/ibmplexsans-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 100 700; font-display: swap; src: url('./fonts/ibmplexsans-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  @font-face { font-family: 'IBM Plex Sans'; font-style: italic; font-weight: 400; font-display: swap; src: url('./fonts/ibmplexsans-italic-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: 'IBM Plex Sans'; font-style: italic; font-weight: 400; font-display: swap; src: url('./fonts/ibmplexsans-italic-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  @font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url('./fonts/ibmplexmono-latin.woff2') format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+  @font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url('./fonts/ibmplexmono-latin-ext.woff2') format('woff2'); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+  body { margin: 0; background: #ffffff; color: #1a1a1a; font-family: 'IBM Plex Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #2b2f88; text-decoration: none; }
+  a:hover { color: #6b3e91; }
+  ::selection { background: #dcdcf2; }
+  details summary::-webkit-details-marker { display: none; }
+  html { scroll-behavior: smooth; }
+  [data-lang="en"] { display: none; }
+  [data-active-lang="en"] [data-lang="en"] { display: revert; }
+  [data-active-lang="en"] [data-lang="de"] { display: none; }
+  [data-active-lang="de"] [data-langbtn="de"], [data-active-lang="en"] [data-langbtn="en"] { background: #f4f5f7 !important; color: #1a1a1a !important; border-color: #2b2f88 !important; }
+</style>
+</helmet>
+<div data-active-lang="{{ activeLang }}" style="max-width: 100%; overflow-x: hidden;">
+
+<header style="position: sticky; top: 0; z-index: 30; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid #e4e4e6;">
+  <div style="max-width: 1120px; margin: 0 auto; padding: 14px 28px; display: flex; align-items: center; gap: 24px;">
+    <a href="#top" style="font-family: 'Roboto Slab', Georgia, serif; font-weight: 700; font-size: 17px; color: #1a1a1a; letter-spacing: -0.01em;">Till Albert</a>
+    <nav style="display: flex; gap: 22px; margin-left: auto; font-size: 14px; color: #595959; flex-wrap: wrap;">
+      <a href="#profil" style="color: #595959;"><span data-lang="de">Profil</span><span data-lang="en">Profile</span></a>
+      <a href="#projekte" style="color: #595959;"><span data-lang="de">Projekte</span><span data-lang="en">Projects</span></a>
+      <a href="#spiele" style="color: #595959;"><span data-lang="de">Spiele</span><span data-lang="en">Games</span></a>
+      <a href="#lehre" style="color: #595959;"><span data-lang="de">Lehre</span><span data-lang="en">Teaching</span></a>
+      <a href="#forschung" style="color: #595959;"><span data-lang="de">Forschung</span><span data-lang="en">Research</span></a>
+      <a href="#kontakt" style="color: #595959;"><span data-lang="de">Kontakt</span><span data-lang="en">Contact</span></a>
+    </nav>
+    <div style="display: flex; align-items: center; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 12px;">
+      <button data-langbtn="de" onClick="{{ setDe }}" style="border: 1px solid #2b2f88; background: #f4f5f7; color: #1a1a1a; padding: 4px 8px; border-radius: 5px; cursor: pointer; font: inherit;" style-hover="border-color: #2b2f88;">DE</button>
+      <button data-langbtn="en" onClick="{{ setEn }}" style="border: 1px solid #e4e4e6; background: #ffffff; color: #7f7f7f; padding: 4px 8px; border-radius: 5px; cursor: pointer; font: inherit;" style-hover="border-color: #2b2f88; color: #2b2f88;">EN</button>
+    </div>
+  </div>
+</header>
+
+<sc-if value="{{ showMain }}" hint-placeholder-val="{{ true }}">
+<main id="top" style="max-width: 1120px; margin: 0 auto; padding: 0 28px 120px;">
+
+  <section style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 56px; align-items: end; padding: 96px 0 72px;">
+    <div>
+      <p style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #2b2f88; margin: 0 0 22px;"><span data-lang="de">Professor für Digitalisierung · Flensburg</span><span data-lang="en">Professor of Digitalisation · Flensburg</span></p>
+      <h1 style="font-family: 'Roboto Slab', Georgia, serif; font-weight: 700; font-size: 62px; line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 28px; text-wrap: balance;">Prof. Dr. Till Albert</h1>
+      <p style="font-size: 20px; line-height: 1.55; color: #404040; margin: 0 0 12px; max-width: 34em; text-wrap: pretty;"><span data-lang="de">Ich arbeite an der digitalen Transformation kleiner und mittlerer Unternehmen — zwischen Forschung, Lehre und handfesten Prototypen. Aktuell: KI-Agenten in betrieblichen Prozessen.</span><span data-lang="en">I work on the digital transformation of small and medium-sized companies — between research, teaching and hands-on prototypes. Currently: AI agents in operational business processes.</span></p>
+      <p style="font-size: 16px; line-height: 1.6; color: #7f7f7f; margin: 0 0 34px; max-width: 34em; font-style: italic;"><span data-lang="de">„Wer erfolgreich digitalisieren will, muss komplexe soziotechnische Systeme verstehen.“</span><span data-lang="en">“Anyone who wants to digitalise successfully has to understand complex socio-technical systems.”</span></p>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+        <a href="https://www.linkedin.com/in/tillalbert/" target="_blank" rel="noopener" style="border: 1px solid #e4e4e6; border-radius: 999px; padding: 8px 15px; font-size: 13px; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">LinkedIn</a>
+        <a href="https://github.com/Zukunftsbastler" target="_blank" rel="noopener" style="border: 1px solid #e4e4e6; border-radius: 999px; padding: 8px 15px; font-size: 13px; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">GitHub</a>
+        <a href="https://scholar.google.com/citations?user=2G0tto0AAAAJ&amp;hl=en" target="_blank" rel="noopener" style="border: 1px solid #e4e4e6; border-radius: 999px; padding: 8px 15px; font-size: 13px; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">Google Scholar</a>
+        <a href="https://www.researchgate.net/profile/Till-Albert" target="_blank" rel="noopener" style="border: 1px solid #e4e4e6; border-radius: 999px; padding: 8px 15px; font-size: 13px; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">ResearchGate</a>
+        <a href="https://hs-flensburg.de/hochschule/personen/albertt" target="_blank" rel="noopener" style="border: 1px solid #e4e4e6; border-radius: 999px; padding: 8px 15px; font-size: 13px; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">Hochschule Flensburg</a>
+      </div>
+    </div>
+    <div style="aspect-ratio: 4/5; border: 1px solid #e4e4e6; border-radius: 12px; overflow: hidden; background: #f4f5f7;">
+      <img src="./Till-400x600.jpg" width="400" height="600" alt="Prof. Dr. Till Albert" style="width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block;" />
+    </div>
+  </section>
+
+  <section id="profil" style="border-top: 1px solid #e4e4e6; padding: 64px 0;">
+    <h2 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 40px;"><span data-lang="de">Schwerpunkte</span><span data-lang="en">Focus areas</span></h2>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px;">
+      <div style="border-top: 2px solid #2b2f88; padding-top: 16px;">
+        <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 19px; font-weight: 600; margin: 0 0 10px; line-height: 1.25;"><span data-lang="de">Digitale Transformation</span><span data-lang="en">Digital transformation</span></h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0;"><span data-lang="de">Soziotechnische Systeme in KMU und Familienunternehmen — von der Strategie bis in den Betrieb.</span><span data-lang="en">Socio-technical systems in SMEs and family businesses — from strategy to the shop floor.</span></p>
+      </div>
+      <div style="border-top: 2px solid #2b2f88; padding-top: 16px;">
+        <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 19px; font-weight: 600; margin: 0 0 10px; line-height: 1.25;"><span data-lang="de">Innovations- &amp; Technologiemanagement</span><span data-lang="en">Innovation &amp; technology management</span></h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0;"><span data-lang="de">Technologiereife, Patent- und Publikationsanalyse, Technology Intelligence.</span><span data-lang="en">Technology maturity, patent and publication analysis, technology intelligence.</span></p>
+      </div>
+      <div style="border-top: 2px solid #2b2f88; padding-top: 16px;">
+        <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 19px; font-weight: 600; margin: 0 0 10px; line-height: 1.25;"><span data-lang="de">Methoden der Zukunftsforschung</span><span data-lang="en">Futures research methods</span></h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0;"><span data-lang="de">Szenario-Technik, Foresight, Roadmapping — zunehmend KI-gestützt.</span><span data-lang="en">Scenario technique, foresight, roadmapping — increasingly AI-supported.</span></p>
+      </div>
+      <div style="border-top: 2px solid #2b2f88; padding-top: 16px;">
+        <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 19px; font-weight: 600; margin: 0 0 10px; line-height: 1.25;"><span data-lang="de">Entrepreneurship &amp; Intrapreneurship</span><span data-lang="en">Entrepreneurship &amp; intrapreneurship</span></h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0;"><span data-lang="de">Internes Unternehmertum in inhabergeführten Betrieben, Inkubation, Company Building.</span><span data-lang="en">Internal entrepreneurship in owner-managed companies, incubation, company building.</span></p>
+      </div>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; font-size: 13px; color: #595959;">
+      <span style="background: #f4f5f7; border-radius: 6px; padding: 7px 12px;">Hochschule Flensburg</span>
+      <span style="background: #f4f5f7; border-radius: 6px; padding: 7px 12px;"><span data-lang="de">Jackstädt-Zentrum — Zentrumssprecher</span><span data-lang="en">Jackstädt Centre — Centre Spokesperson</span></span>
+      <span style="background: #f4f5f7; border-radius: 6px; padding: 7px 12px;">FLAIR — Flensburg AI Research</span>
+      <span style="background: #f4f5f7; border-radius: 6px; padding: 7px 12px;"><span data-lang="de">NewCo Partners — Head of Digitalization</span><span data-lang="en">NewCo Partners — Head of Digitalization</span></span>
+    </div>
+  </section>
+
+  <section id="projekte" style="border-top: 1px solid #e4e4e6; padding: 64px 0;">
+    <h2 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 12px;"><span data-lang="de">Projekte &amp; Experimente</span><span data-lang="en">Projects &amp; experiments</span></h2>
+    <p style="font-size: 17px; color: #595959; max-width: 40em; margin: 0 0 40px; line-height: 1.6;"><span data-lang="de">Kurzfassung zuerst — für die ganze Geschichte ein Projekt aufklappen.</span><span data-lang="en">Short version first — open a project for the full story.</span></p>
+
+    <details style="border-top: 1px solid #e4e4e6; padding: 22px 0;">
+      <summary style="cursor: pointer; list-style: none; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline;">
+        <div>
+          <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 26px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em;"><span data-lang="de">KI-Agenten für einen Handwerksbetrieb</span><span data-lang="en">AI agents for a craft business</span></h3>
+          <p style="font-size: 16px; color: #595959; margin: 0; max-width: 46em; line-height: 1.6;"><span data-lang="de">Laufend: Agentensysteme für interne Prozesse in einem mittelständischen Handwerksbetrieb.</span><span data-lang="en">Ongoing: agent systems for internal processes in a medium-sized craft business.</span></p>
+        </div>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2b2f88; letter-spacing: 0.1em;"><span data-lang="de">2025 — LAUFEND</span><span data-lang="en">2025 — ONGOING</span></span>
+      </summary>
+      <p style="font-size: 16px; line-height: 1.7; color: #404040; max-width: 46em; margin: 20px 0 0;"><span data-lang="de">Wo entlastet ein Agent im kleinen Betrieb wirklich — Angebotserstellung, Terminplanung, Dokumentation — und wo entsteht bloß eine neue Fehlerquelle? Das Projekt prüft das im laufenden Betrieb statt im Labor.</span><span data-lang="en">Where does an agent genuinely relieve the workload in a small company — quoting, scheduling, documentation — and where does it just add a new source of error? The project tests this in real operations rather than in a lab.</span></p>
+    </details>
+
+    <details style="border-top: 1px solid #e4e4e6; padding: 22px 0;">
+      <summary style="cursor: pointer; list-style: none; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline;">
+        <div>
+          <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 26px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em;">Sylabary</h3>
+          <p style="font-size: 16px; color: #595959; margin: 0; max-width: 46em; line-height: 1.6;"><span data-lang="de">Aus einem groben Vorlesungstitel werden Folien, Video, Lernmaterial und Prüfungsaufgaben.</span><span data-lang="en">From a rough lecture title to slides, video, learning material and exam questions.</span></p>
+        </div>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2b2f88; letter-spacing: 0.1em;"><span data-lang="de">WERKZEUG</span><span data-lang="en">TOOL</span></span>
+      </summary>
+      <div style="max-width: 46em; margin: 20px 0 0;">
+        <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0 0 14px;"><span data-lang="de">Sylabary kommt mit erstaunlich wenig aus: Ein grober Titel für eine Vorlesung genügt. Das Werkzeug fragt gezielt nach — etwa nach dem Adressatenkreis — und bestimmt anschließend selbst, welche didaktischen Prinzipien tragen; beeinflussen lässt sich das natürlich jederzeit. Daraus entsteht ein passender Foliensatz, ein Video, in dem mein Avatar mit meiner Stimme durch diesen Foliensatz führt, und dazu Lernmaterial und Prüfungsaufgaben.</span><span data-lang="en">Sylabary needs remarkably little to start: a rough title for a lecture is enough. The tool asks precise follow-up questions — about the intended audience, for instance — and then decides for itself which didactic principles fit; that decision can of course be overridden at any point. Out of this comes a matching slide deck, a video in which my avatar walks through that deck in my voice, and the accompanying learning material and exam questions.</span></p>
+        <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0 0 14px;"><span data-lang="de">Der Leitgedanke dahinter: Policies statt Prompts. Was gut ist, wird einmal als Regel hinterlegt und nicht bei jedem Kurs neu formuliert — das macht die Ergebnisse über einen Studiengang hinweg konsistent und nachvollziehbar.</span><span data-lang="en">The guiding idea: policies instead of prompts. What works well is stored once as a rule rather than rewritten for every course — which keeps results consistent and auditable across a whole degree programme.</span></p>
+        <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0;"><span data-lang="de">Entstanden ist Sylabary aus dem regelmäßigen Austausch mit Jan Gerken, der das verwandte Projekt „Lernpfad“ entwickelt hat. Zwei Werkzeuge, eine Frage: Wie kommt man vom Curriculum zu konsistenten Lehrmaterialien, ohne jedes Artefakt von Hand zu bauen?</span><span data-lang="en">Sylabary emerged from a running exchange with Jan Gerken, who developed the related project “Lernpfad”. Two tools, one question: how do you get from a syllabus to consistent teaching material without producing every artefact by hand?</span></p>
+      </div>
+    </details>
+
+    <details style="border-top: 1px solid #e4e4e6; padding: 22px 0;">
+      <summary style="cursor: pointer; list-style: none; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline;">
+        <div>
+          <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 26px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em;"><span data-lang="de">Szenario-Technik als Scaffolding — das erste Vibe-Coding-Projekt</span><span data-lang="en">Scenario technique as a scaffold — the first vibe-coding project</span></h3>
+          <p style="font-size: 16px; color: #595959; margin: 0; max-width: 46em; line-height: 1.6;"><span data-lang="de">FutureForge, mit Steffen Cords: eine One-Page-App, die Szenario-Berichte nach Gausemeier erzeugt.</span><span data-lang="en">FutureForge, with Steffen Cords: a one-page app that generates scenario reports following Gausemeier.</span></p>
+        </div>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2b2f88; letter-spacing: 0.1em;"><span data-lang="de">ARCHIV</span><span data-lang="en">ARCHIVE</span></span>
+      </summary>
+      <div style="max-width: 46em; margin: 20px 0 0;">
+        <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0 0 14px;"><span data-lang="de">Eine Kollaboration mit meinem ehemaligen Kollegen und guten Freund Steffen Cords. Wir haben darin das noch junge Claude getestet, weil es vergleichsweise gute Programmierkompetenz bot — zunächst haben wir den Stand aus dem Web-Frontend hin- und hergemailt, später über GitHub ausgetauscht und schließlich das Plugin Cline genutzt, um auch andere Modelle zu vergleichen.</span><span data-lang="en">A collaboration with my former colleague and good friend Steffen Cords. We tested the then still young Claude because it offered comparatively strong coding ability — at first mailing the current state back and forth from the web frontend, later via GitHub, finally through the Cline plugin so we could compare other models too.</span></p>
+        <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0 0 14px;"><span data-lang="de">Die Modelle haben damals noch Elemente halluziniert oder vergessen, das Attention Window war klein. Mit rudimentären Software-Development-Kenntnissen war die Arbeit von Rückschlägen gezeichnet — und wir haben sehr viel dabei gelernt.</span><span data-lang="en">The models still hallucinated or forgot elements, and the attention window was small. With rudimentary software engineering skills the work was full of setbacks — and we learned a great deal from it.</span></p>
+        <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0 0 14px;"><span data-lang="de">Inhaltlich stützte sich die App auf Szenario-Projekte, die wir gemeinsam als Strategieberater bei der Porsche-Tochter MHP und davor in der Volkswagen Konzern-Zukunftsforschung umgesetzt hatten. Das Alleinstellungsmerkmal waren die sauber formulierten Prompts: minimaler Aufwand, umfassender Bericht. Das ist gelungen.</span><span data-lang="en">Content-wise the app built on scenario projects we had run together as strategy consultants at Porsche subsidiary MHP and, before that, in Volkswagen Group future research. The distinguishing feature was the carefully written prompts: minimal input, comprehensive report. It worked.</span></p>
+        <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0;"><span data-lang="de">Die Gründung haben wir wieder verworfen: Jede neue Modellgeneration erledigt mehr davon selbst, das Scaffolding wird immer entbehrlicher. Dokumentiert ist das Projekt in einer preisgekrönten Masterthesis von Mats Ramsl.</span><span data-lang="en">We dropped the plan to found a company: every new model generation does more of this on its own, and the scaffolding becomes less necessary. The project lives on in an award-winning master's thesis by Mats Ramsl.</span></p>
+      </div>
+    </details>
+
+    <details style="border-top: 1px solid #e4e4e6; padding: 22px 0;">
+      <summary style="cursor: pointer; list-style: none; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline;">
+        <div>
+          <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 26px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em;"><span data-lang="de">Virtual Reality in KMU</span><span data-lang="en">Virtual reality in SMEs</span></h3>
+          <p style="font-size: 16px; color: #595959; margin: 0; max-width: 46em; line-height: 1.6;"><span data-lang="de">Wann lohnt sich VR für ein kleines Unternehmen — und wann nicht? Das Projekt „VR-Leitfaden“ beantwortet das mit eigenen Experimenten.</span><span data-lang="en">When is VR worth it for a small company — and when is it not? The “VR-Leitfaden” project answers that with its own experiments.</span></p>
+        </div>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2b2f88; letter-spacing: 0.1em;">2024 — 2026</span>
+      </summary>
+      <div style="max-width: 46em; margin: 20px 0 0;">
+        <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0 0 14px;"><span data-lang="de">Gefördert vom Land Schleswig-Holstein aus dem Exzellenz- und Strukturbudget, angesiedelt am VR-Labor des Jackstädt-Zentrums. Am Ende soll ein Handbuch stehen, das sich ausdrücklich an Unternehmensverantwortliche ohne technischen Hintergrund richtet: ein Framework aus sieben Domänen, eine Taxonomie von Meeting-Typen mit Eignungsbewertung und eine nüchterne Kostenschätzung nach der Analogiemethode.</span><span data-lang="en">Funded by the state of Schleswig-Holstein from its excellence and structural budget, run at the VR laboratory of the Jackstädt Centre. The end product is a handbook aimed explicitly at business decision-makers without a technical background: a seven-domain framework, a taxonomy of meeting types with suitability ratings, and a sober cost estimate based on the analogy method.</span></p>
+        <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0 0 14px;"><span data-lang="de">Der Kern ist eine selbst entwickelte VR-Multiplayer-Anwendung in Unity, gebaut nach dem Principal-Agent-Paradigma: Drei Führungskräfte verhandeln darin über die Verteilung strategischer Ressourcen. Verhandlung unter konkurrierenden Zielen ist in der VR-Forschung erstaunlich unterrepräsentiert, obwohl sich kaum ein Szenario besser dafür eignet. Im ersten Workshop-Durchgang (n=15) fiel die hedonische Bewertung sehr hoch aus, und selbst physisch getrennte Teilnehmende zeigten deiktische Gesten und soziale Zuwendung — VR aktiviert Präsenzmuster des echten Treffens über Distanz hinweg. Zugleich wiesen 38 % danach erhöhte Motion-Sickness-Werte auf. Beides gehört in den Leitfaden.</span><span data-lang="en">At its heart is a Unity-based VR multiplayer application we built ourselves, following the principal–agent paradigm: three executives negotiate over the allocation of strategic resources. Negotiation under competing goals is surprisingly under-represented in VR research, even though hardly any scenario suits the medium better. In the first workshop round (n=15) the hedonic ratings came out very high, and even physically separated participants produced deictic gestures and social orientation — VR activates the presence patterns of a face-to-face meeting across distance. At the same time, 38 % showed elevated motion sickness scores afterwards. Both belong in the guide.</span></p>
+        <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0 0 14px;"><span data-lang="de">Ein zweites Experiment lieferte einen klaren Negativbefund. Wir haben geprüft, ob sich mit dem LiDAR-Sensor handelsüblicher iPhones VR-taugliche 3D-Scans erzeugen lassen — bewusst mit Geräten, die in KMU-Belegschaften ohnehin verbreitet sind. Detailverlust, Loch-Artefakte und physikalisch bedingte Transparenzprobleme machen Consumer-LiDAR für professionelle Inhalte derzeit unbrauchbar. Negativbefunde sind wissenschaftlich gleichwertig und praktisch oft wertvoller: Sie bewahren KMU vor Fehlinvestitionen. Interessant wird der kombinierte Weg aus iPhone-LiDAR und 3D Gaussian Splatting, den wir uns als Nächstes ansehen.</span><span data-lang="en">A second experiment produced a clear negative result. We tested whether the LiDAR sensor in off-the-shelf iPhones can generate 3D scans good enough for VR — deliberately using devices already common in SME workforces. Loss of detail, hole artefacts and physically unavoidable transparency problems make consumer LiDAR unusable for professional content at present. Negative findings are scientifically just as valid and often more useful in practice: they keep small companies from investing in the wrong thing. The combination of iPhone LiDAR and 3D Gaussian splatting is the more promising route, and it is what we look at next.</span></p>
+        <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0 0 20px;"><span data-lang="de">Als Nächstes bekommt die Anwendung einen KI-gesteuerten Prinzipal: Ein Agent übernimmt die Rolle des abwesenden Verhandlungspartners. Die Frage dahinter: Erzeugen KI-Avatare in VR-Meetings soziale Präsenz — und verändern sie das strategische Verhalten der Menschen am Tisch?</span><span data-lang="en">The next step gives the application an AI-driven principal: an agent takes the role of the absent negotiating partner. The question behind it: do AI avatars in VR meetings generate social presence — and do they change the strategic behaviour of the humans at the table?</span></p>
+        <a href="https://hs-flensburg.de/forschung/labore/virtual-reality-labor-des-jackstaedt-zentrums-flensburg" target="_blank" rel="noopener" style="font-size: 14px; font-family: 'IBM Plex Mono', monospace;"><span data-lang="de">VR-Labor ↗</span><span data-lang="en">VR laboratory ↗</span></a>
+      </div>
+    </details>
+  </section>
+
+  <section id="spiele" style="border-top: 1px solid #e4e4e6; padding: 64px 0;">
+    <h2 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 12px;"><span data-lang="de">Spielbare Experimente</span><span data-lang="en">Playable experiments</span></h2>
+    <p style="font-size: 17px; color: #595959; max-width: 42em; margin: 0 0 40px; line-height: 1.6;"><span data-lang="de">Jedes dieser kleinen Spiele beantwortet eine Frage zur KI-gestützten Entwicklung. Alle laufen direkt im Browser.</span><span data-lang="en">Each of these small games answers one question about AI-assisted development. All of them run in the browser.</span></p>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+      <a href="https://glitchdungeon.netlify.app" target="_blank" rel="noopener" style="display: block; border: 1px solid #e4e4e6; border-radius: 12px; padding: 26px; background: #ffffff; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b3e91; letter-spacing: 0.1em;">01</span>
+        <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 22px; font-weight: 600; margin: 14px 0 10px;">Glitch Dungeon</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0 0 18px;"><span data-lang="de">Taugen Code Golfing und Demoscene-Stil für Vibe Coding? Ein Dark-Fantasy-Roguelike in Vanilla JS: prozedurale Ebenen, zehn Biome — und ein Glitch, der die Welt umbaut, während man darin steht.</span><span data-lang="en">Is code golfing and demoscene style a fit for vibe coding? A dark-fantasy roguelike in vanilla JS: procedural floors, ten biomes — and a glitch that rebuilds the world while you are standing in it.</span></p>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">glitchdungeon.netlify.app ↗</span>
+      </a>
+      <a href="https://minigolf2000.netlify.app" target="_blank" rel="noopener" style="display: block; border: 1px solid #e4e4e6; border-radius: 12px; padding: 26px; background: #ffffff; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b3e91; letter-spacing: 0.1em;">02</span>
+        <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 22px; font-weight: 600; margin: 14px 0 10px;">Minigolf 2000</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0 0 18px;"><span data-lang="de">Ein vollständiges Spiel aus einem einzigen Prompt. Wie weit trägt eine gut formulierte Anweisung? Herausgekommen sind eine eigene Physik-Engine und ein Bahnformat, in das sich neue Löcher als einzelne Datei einhängen lassen.</span><span data-lang="en">A complete game from a single prompt. How far does one well-formed instruction carry? What came out was a physics engine of its own and a course format into which new holes slot as a single file.</span></p>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">minigolf2000.netlify.app ↗</span>
+      </a>
+      <a href="https://seegang.netlify.app" target="_blank" rel="noopener" style="display: block; border: 1px solid #e4e4e6; border-radius: 12px; padding: 26px; background: #ffffff; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b3e91; letter-spacing: 0.1em;">03</span>
+        <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 22px; font-weight: 600; margin: 14px 0 10px;">Seegang</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0 0 18px;"><span data-lang="de">Mobile Games heißt: ein Daumen links, ein Daumen rechts. Ein Roguelite auf dem Radarschirm der Hafenwache — die Bordsysteme feuern selbsttätig, die eigentliche Entscheidung ist die Fahrt.</span><span data-lang="en">Mobile games means one thumb left, one thumb right. A roguelite on a harbour watch's radar screen — the onboard systems fire by themselves, the real decision is where you steer.</span></p>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">seegang.netlify.app ↗</span>
+      </a>
+      <a href="https://randomaze.netlify.app" target="_blank" rel="noopener" style="display: block; border: 1px solid #e4e4e6; border-radius: 12px; padding: 26px; background: #ffffff; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b3e91; letter-spacing: 0.1em;">04</span>
+        <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 22px; font-weight: 600; margin: 14px 0 10px;">Randomaze</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0 0 18px;"><span data-lang="de">Experimente mit A*-Pathfinding in prozedural erzeugten Hex-Labyrinthen. Fog of War, und vor dem Start ein kurzer Blick auf die Karte — je kürzer, desto höher der Punktemultiplikator.</span><span data-lang="en">Experiments with A* path-finding in procedurally generated hex mazes. Fog of war, and a brief look at the map before the run — the shorter the look, the higher the score multiplier.</span></p>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">randomaze.netlify.app ↗</span>
+      </a>
+      <a href="https://void-vanguard.netlify.app" target="_blank" rel="noopener" style="display: block; border: 1px solid #e4e4e6; border-radius: 12px; padding: 26px; background: #ffffff; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b3e91; letter-spacing: 0.1em;">05</span>
+        <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 22px; font-weight: 600; margin: 14px 0 10px;">Void Vanguard</h3>
+        <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0 0 18px;"><span data-lang="de">Wie fühlt sich ein Entity Component System an, wenn man es selbst baut? Angelehnt an Faster Than Light — wer das Original nicht kennt, wird es vermutlich zu komplex finden.</span><span data-lang="en">What does an entity component system feel like when you build one yourself? Modelled on Faster Than Light — anyone who does not know the original will probably find it too complex.</span></p>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">void-vanguard.netlify.app ↗</span>
+      </a>
+      <div style="border: 1px dashed #e4e4e6; border-radius: 12px; padding: 26px; display: flex; flex-direction: column; justify-content: flex-end; background: repeating-linear-gradient(135deg, #fafafb 0 10px, #ffffff 10px 20px);">
+        <p style="font-size: 15px; line-height: 1.6; color: #7f7f7f; margin: 0;"><span data-lang="de">Platz für das nächste Experiment.</span><span data-lang="en">Space for the next experiment.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="lehre" style="border-top: 1px solid #e4e4e6; padding: 64px 0;">
+    <h2 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 12px;"><span data-lang="de">Lehre, Video &amp; Audio</span><span data-lang="en">Teaching, video &amp; audio</span></h2>
+    <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; margin-top: 32px;">
+      <div>
+        <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 28px; font-weight: 600; margin: 0 0 16px; letter-spacing: -0.015em; line-height: 1.2;"><span data-lang="de">Zwanzig Jahre Inverted Classroom — und ein Studio, das in den Laptop passt</span><span data-lang="en">Twenty years of inverted classroom — and a studio that fits in a laptop</span></h3>
+        <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0 0 14px;"><span data-lang="de">Der Ursprung liegt bei meinem Doktorvater Prof. Dr. Martin Möhrle, der seine Vorlesungen sehr früh im Inverted Classroom angeboten hat. Während der Corona-Jahre habe ich mein gesamtes Portfolio umgestellt und die Videos zunächst zu Hause aufgenommen.</span><span data-lang="en">The idea goes back to my doctoral supervisor Prof. Dr. Martin Möhrle, who offered his lectures in an inverted classroom format very early on. During the Corona years I converted my entire portfolio and first recorded the videos at home.</span></p>
+        <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0 0 24px;"><span data-lang="de">Inzwischen starte ich am liebsten in Sylabary — komplett lokal, mit einer agentisch arbeitenden, selbst gehosteten KI. Für Stimme und Avatar kommen ElevenLabs und HeyGen dazu, weitere Materialien entstehen mit Claude Code. Der entscheidende Gewinn: Ich muss vor keiner Aufnahme mehr „in die Maske“ — neue Inhalte lassen sich damit regelmäßig aufgreifen statt einmal pro Semester.</span><span data-lang="en">These days I prefer to start in Sylabary — entirely local, running on a self-hosted agentic AI. ElevenLabs and HeyGen come in for voice and avatar, further material is written with Claude Code. The decisive gain: I no longer have to go “into make-up” before every recording — so new content can be picked up regularly instead of once per semester.</span></p>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+          <a href="https://www.youtube.com/@tillalbert7907" target="_blank" rel="noopener" style="border: 1px solid #e4e4e6; border-radius: 8px; padding: 11px 16px; font-size: 14px; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;"><span data-lang="de">YouTube-Kanal ↗</span><span data-lang="en">YouTube channel ↗</span></a>
+          <a href="https://www.instagram.com/reel/DZkLR7uqEtD/" target="_blank" rel="noopener" style="border: 1px solid #e4e4e6; border-radius: 8px; padding: 11px 16px; font-size: 14px; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">Instagram ↗</a>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="border: 1px solid #e4e4e6; border-radius: 12px; padding: 24px; background: #f4f5f7;">
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #6b3e91; margin: 0 0 12px;">PODCAST</p>
+          <h4 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 20px; font-weight: 600; margin: 0 0 8px;">Project Ludos</h4>
+          <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0 0 16px;"><span data-lang="de">Spiele, KI und was beides miteinander zu tun hat — als Video-Playlist und als Podcast.</span><span data-lang="en">Games, AI and what the two have to do with each other — as a video playlist and as a podcast.</span></p>
+          <div style="display: flex; gap: 16px; font-size: 14px; font-family: 'IBM Plex Mono', monospace;">
+            <a href="https://www.youtube.com/playlist?list=PLgoEvjQImm2M_IZrma1VRuqj9X4ETnT9A" target="_blank" rel="noopener">YouTube ↗</a>
+            <a href="https://open.spotify.com/show/7IjUzjE8WoxdL82FKaewUj" target="_blank" rel="noopener">Spotify ↗</a>
+          </div>
+        </div>
+        <div style="border: 1px solid #e4e4e6; border-radius: 12px; padding: 24px;">
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #6b3e91; margin: 0 0 12px;"><span data-lang="de">PODCAST · ZU GAST</span><span data-lang="en">PODCAST · AS A GUEST</span></p>
+          <h4 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 20px; font-weight: 600; margin: 0 0 8px;">Nachts im Labor</h4>
+          <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0 0 16px;"><span data-lang="de">Eine Folge über Zukunftsforschung: der Weg aus der Unternehmenswelt an die Hochschule, was Foresight Unternehmen konkret bringt — und FutureForge, das Szenario-Werkzeug aus dem Projekt weiter oben.</span><span data-lang="en">An episode on futures research: the path from the corporate world into academia, what foresight actually does for companies — and FutureForge, the scenario tool from the project further up this page.</span></p>
+          <a href="https://open.spotify.com/episode/7LWgNY0gx89oTpBkAi6eI8" target="_blank" rel="noopener" style="font-size: 14px; font-family: 'IBM Plex Mono', monospace;">Spotify ↗</a>
+        </div>
+        <div style="border: 1px solid #e4e4e6; border-radius: 12px; padding: 24px;">
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #7f7f7f; margin: 0 0 12px;"><span data-lang="de">LEHRVERANSTALTUNGEN</span><span data-lang="en">COURSES</span></p>
+          <p style="font-size: 15px; line-height: 1.8; color: #404040; margin: 0;">Enterprise Architecture · Informationsmanagement · Business Process Management · Digitale Wirtschaft · Betriebliche Informationsverarbeitung · Trustworthy AI · Methoden der Zukunftsforschung</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="border-top: 1px solid #e4e4e6; padding: 64px 0;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start;">
+      <div>
+        <h2 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 24px;"><span data-lang="de">Vorträge &amp; Schulungen</span><span data-lang="en">Talks &amp; training</span></h2>
+        <p style="font-size: 20px; line-height: 1.55; color: #1a1a1a; margin: 0 0 16px; max-width: 26em; text-wrap: pretty;"><span data-lang="de">Keynotes, Podiumsdiskussionen und Inhouse-Schulungen zum Thema künstliche Intelligenz — für Unternehmen, Verbände und öffentliche Einrichtungen.</span><span data-lang="en">Keynotes, panel discussions and in-house training on artificial intelligence — for companies, associations and public institutions.</span></p>
+        <p style="font-size: 16px; line-height: 1.7; color: #595959; margin: 0 0 24px; max-width: 30em;"><span data-lang="de">Typische Formate: Impulsvortrag (30–45 Min.), Halbtags-Workshop oder eine Reihe zur Begleitung einer internen KI-Initiative.</span><span data-lang="en">Typical formats: impulse talk (30–45 min), half-day workshop, or a series accompanying an internal AI initiative.</span></p>
+        <a href="mailto:till.albert@hs-flensburg.de" style="display: inline-block; background: #2b2f88; color: #ffffff; border-radius: 8px; padding: 13px 22px; font-size: 15px;" style-hover="background: #6b3e91;"><span data-lang="de">Vortrag anfragen</span><span data-lang="en">Request a talk</span></a>
+      </div>
+      <div>
+        <h2 id="forschung" style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 24px; scroll-margin-top: 90px;"><span data-lang="de">Forschung &amp; Publikationen</span><span data-lang="en">Research &amp; publications</span></h2>
+        <p style="font-size: 15px; line-height: 1.6; color: #7f7f7f; margin: 0 0 20px;"><span data-lang="de">Ein Auszug — die vollständige Liste steht bei Google Scholar und ResearchGate.</span><span data-lang="en">A selection — the full list is on Google Scholar and ResearchGate.</span></p>
+        <ul style="list-style: none; padding: 0; margin: 0 0 22px; display: flex; flex-direction: column; gap: 14px;">
+          <li style="font-size: 15px; line-height: 1.55; color: #404040; border-left: 2px solid #e4e4e6; padding-left: 14px;">Albert, T. (2016): Measuring Technology Maturity — Operationalizing Information from Patents, Scientific Publications, and the Web. Springer.</li>
+          <li style="font-size: 15px; line-height: 1.55; color: #404040; border-left: 2px solid #e4e4e6; padding-left: 14px;">Albert, T.; Moehrle, M. G.; Meyer, S. (2014): Technology Maturity Estimation Based on Blog Analysis. Technological Forecasting and Social Change, 92.</li>
+          <li style="font-size: 15px; line-height: 1.55; color: #404040; border-left: 2px solid #e4e4e6; padding-left: 14px;">Albert, T.; Voigt, N.; Wawer, T. (2019): Optimizing Prosumers' Battery Energy Storage Management Using Machine Learning. EEM 2019.</li>
+          <li style="font-size: 15px; line-height: 1.55; color: #404040; border-left: 2px solid #e4e4e6; padding-left: 14px;">Albert, T.; Selck, K.; Niebuhr, O. (2022): “And miles to go before…” — Are speech intensity levels adjusted to VR communication distances? Nordic Prosody 13.</li>
+        </ul>
+        <div style="display: flex; gap: 18px; font-size: 14px; font-family: 'IBM Plex Mono', monospace;">
+          <a href="https://scholar.google.com/citations?user=2G0tto0AAAAJ&amp;hl=en" target="_blank" rel="noopener">Scholar ↗</a>
+          <a href="https://www.researchgate.net/profile/Till-Albert" target="_blank" rel="noopener">ResearchGate ↗</a>
+          <a href="https://hs-flensburg.de/forschung/fue/forschungsinstitute/flair/team" target="_blank" rel="noopener">FLAIR ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="border-top: 1px solid #e4e4e6; padding: 64px 0;">
+    <h2 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 40px;"><span data-lang="de">Werdegang &amp; Engagement</span><span data-lang="en">Career &amp; commitment</span></h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 56px;">
+      <ol style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px;">
+        <li style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #2b2f88;">seit 2019</span><span style="font-size: 16px; line-height: 1.5; color: #1a1a1a;"><span data-lang="de">Professor für Digitalisierung, Hochschule Flensburg</span><span data-lang="en">Professor of Digitalisation, Flensburg University of Applied Sciences</span></span></li>
+        <li style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2017—2019</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Professor für Unternehmensführung, Hochschule Osnabrück</span><span data-lang="en">Professor of Business Management, Osnabrück University of Applied Sciences</span></span></li>
+        <li style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2015—2017</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Manager, MHP — A Porsche Company</span><span data-lang="en">Manager, MHP — A Porsche Company</span></span></li>
+        <li style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2013—2015</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Promotion (Dr. rer. pol.) bei Prof. Dr. Martin G. Möhrle, IPMI, Universität Bremen</span><span data-lang="en">Doctorate (Dr. rer. pol.) with Prof. Dr. Martin G. Möhrle, IPMI, University of Bremen</span></span></li>
+        <li style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2011—2013</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Gründer und Partner, Mapegy GmbH, Berlin</span><span data-lang="en">Founder and partner, Mapegy GmbH, Berlin</span></span></li>
+        <li style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2009—2011</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Volkswagen AG, Konzern-Zukunftsforschung</span><span data-lang="en">Volkswagen AG, Group future research</span></span></li>
+        <li style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2001—2008</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Dipl.-Wi.-Ing., Universität Karlsruhe (TH) / heute KIT und UPM Madrid</span><span data-lang="en">Dipl.-Wi.-Ing., University of Karlsruhe (TH) / today KIT and UPM Madrid</span></span></li>
+      </ol>
+      <div style="background: #f4f5f7; border-radius: 12px; padding: 30px;">
+        <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 20px; font-weight: 600; margin: 0 0 18px;"><span data-lang="de">Gremien &amp; Ehrenamt</span><span data-lang="en">Committees &amp; voluntary work</span></h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; font-size: 15px; line-height: 1.55; color: #404040;">
+          <li><span data-lang="de">Vorstand Rotary Club Flensburg (ehrenamtlich, seit vielen Jahren)</span><span data-lang="en">Board member, Rotary Club Flensburg (voluntary, for many years)</span></li>
+          <li><span data-lang="de">Seit 2021 immer wieder als gewähltes Mitglied in Konvent und Senat der Hochschule Flensburg aktiv</span><span data-lang="en">Repeatedly active as an elected member of the Convent and the Senate of Flensburg University of Applied Sciences since 2021</span></li>
+          <li><span data-lang="de">Zentrumssprecher des Jackstädt-Zentrums Flensburg</span><span data-lang="en">Centre spokesperson, Jackstädt Centre Flensburg</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakt" style="border-top: 1px solid #e4e4e6; padding: 64px 0 0;">
+    <h2 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 28px;">Kontakt</h2>
+    <p style="font-family: 'Roboto Slab', Georgia, serif; font-size: 40px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 28px; line-height: 1.15;"><a href="mailto:till.albert@hs-flensburg.de">till.albert@hs-flensburg.de</a></p>
+    <div style="display: flex; flex-wrap: wrap; gap: 26px; font-size: 15px;">
+      <a href="https://www.linkedin.com/in/tillalbert/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Zukunftsbastler" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://www.xing.com/profile/Till_Albert" target="_blank" rel="noopener">XING</a>
+      <a href="https://newco-partners.de/index.php/ueber/prof-dr-till-albert/" target="_blank" rel="noopener">NewCo Partners</a>
+    </div>
+  </section>
+
+</main>
+</sc-if>
+
+<sc-if value="{{ showImpressum }}">
+<main style="max-width: 760px; margin: 0 auto; padding: 80px 28px 120px;">
+  <button onClick="{{ goHome }}" style="border: none; background: none; padding: 0; margin: 0 0 30px; color: #2b2f88; cursor: pointer; font: inherit; font-size: 14px;"><span data-lang="de">← Zurück</span><span data-lang="en">← Back</span></button>
+  <h1 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 40px; font-weight: 700; margin: 0 0 32px; letter-spacing: -0.02em;">Impressum</h1>
+  <div style="font-size: 16px; line-height: 1.8; color: #404040;">
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Angaben gemäß § 5 DDG</strong><strong data-lang="en">Information pursuant to § 5 DDG</strong></p>
+    <p style="margin: 0 0 20px;">Prof. Dr. Till Albert<br />Marienkirchhof 6<br />24937 Flensburg<br />Deutschland</p>
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Kontakt</strong><strong data-lang="en">Contact</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">E-Mail: <a href="mailto:till.albert@hs-flensburg.de">till.albert@hs-flensburg.de</a><br />Ein Telefonanschluss für diese Website wird nicht bereitgehalten; die Kontaktaufnahme per E-Mail ist jederzeit möglich und wird zeitnah beantwortet.</span><span data-lang="en">E-mail: <a href="mailto:till.albert@hs-flensburg.de">till.albert@hs-flensburg.de</a><br />No telephone line is maintained for this website; contact by e-mail is possible at any time and will be answered promptly.</span></p>
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Verantwortlich für journalistisch-redaktionelle Inhalte nach § 18 Abs. 2 MStV</strong><strong data-lang="en">Responsible for journalistic and editorial content pursuant to § 18 (2) MStV</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">Prof. Dr. Till Albert, Anschrift wie oben</span><span data-lang="en">Prof. Dr. Till Albert, address as above</span></p>
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Art dieses Angebots</strong><strong data-lang="en">Nature of this website</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">Diese Website ist ein privates, persönliches Angebot. Sie ist kein Angebot der Hochschule Flensburg; die hier vertretenen Auffassungen sind meine eigenen. Für Inhalte der Hochschule gilt deren eigenes Impressum.</span><span data-lang="en">This website is a private, personal publication. It is not published by Flensburg University of Applied Sciences; the views expressed here are my own. Content published by the university is covered by its own imprint.</span></p>
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Haftung für Inhalte</strong><strong data-lang="en">Liability for content</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">Die Inhalte dieser Seiten wurden mit Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität kann ich jedoch keine Gewähr übernehmen.</span><span data-lang="en">The content of these pages has been compiled with care. I can, however, give no warranty as to its accuracy, completeness or currency.</span></p>
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Haftung für Links</strong><strong data-lang="en">Liability for links</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">Diese Seite verlinkt auf externe Websites, auf deren Inhalte ich keinen Einfluss habe. Für die Inhalte verlinkter Seiten ist stets der jeweilige Anbieter verantwortlich. Zum Zeitpunkt der Verlinkung waren keine Rechtsverstöße erkennbar; bei Bekanntwerden entferne ich entsprechende Links unverzüglich.</span><span data-lang="en">This site links to external websites over whose content I have no influence. Responsibility for the content of linked pages always lies with their respective operator. No infringements were apparent at the time the links were set; should any become known, I will remove the link concerned without delay.</span></p>
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Urheberrecht</strong><strong data-lang="en">Copyright</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">Die von mir erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die verwendeten Schriftarten stehen unter freien Lizenzen: Roboto Slab (Apache License 2.0), IBM Plex Sans und IBM Plex Mono (SIL Open Font License 1.1).</span><span data-lang="en">The content and works created by me on these pages are subject to German copyright law. The typefaces used are released under free licences: Roboto Slab (Apache License 2.0), IBM Plex Sans and IBM Plex Mono (SIL Open Font License 1.1).</span></p>
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Verbraucherstreitbeilegung</strong><strong data-lang="en">Consumer dispute resolution</strong></p>
+    <p style="margin: 0;"><span data-lang="de">Ich bin nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</span><span data-lang="en">I am neither willing nor obliged to take part in dispute resolution proceedings before a consumer arbitration board.</span></p>
+  </div>
+</main>
+</sc-if>
+
+<sc-if value="{{ showDatenschutz }}">
+<main style="max-width: 760px; margin: 0 auto; padding: 80px 28px 120px;">
+  <button onClick="{{ goHome }}" style="border: none; background: none; padding: 0; margin: 0 0 30px; color: #2b2f88; cursor: pointer; font: inherit; font-size: 14px;"><span data-lang="de">← Zurück</span><span data-lang="en">← Back</span></button>
+  <h1 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 40px; font-weight: 700; margin: 0 0 32px; letter-spacing: -0.02em;"><span data-lang="de">Datenschutz</span><span data-lang="en">Privacy policy</span></h1>
+  <div style="font-size: 16px; line-height: 1.8; color: #404040;">
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Verantwortlicher</strong><strong data-lang="en">Controller</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO) ist:<br />Prof. Dr. Till Albert, Marienkirchhof 6, 24937 Flensburg, Deutschland<br />E-Mail: <a href="mailto:till.albert@hs-flensburg.de">till.albert@hs-flensburg.de</a><br />Ein Datenschutzbeauftragter ist für dieses private Angebot gesetzlich nicht zu bestellen.</span><span data-lang="en">The controller within the meaning of the General Data Protection Regulation (GDPR) is:<br />Prof. Dr. Till Albert, Marienkirchhof 6, 24937 Flensburg, Germany<br />E-mail: <a href="mailto:till.albert@hs-flensburg.de">till.albert@hs-flensburg.de</a><br />There is no legal obligation to appoint a data protection officer for this private website.</span></p>
+
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Kein Tracking, keine Cookies, keine Einbettungen</strong><strong data-lang="en">No tracking, no cookies, no embeds</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">Diese Website setzt keine Cookies, nutzt kein Analyse- oder Reichweitenmesswerkzeug, bindet keine Media-Player, Karten, Social-Media-Widgets oder Content Delivery Networks Dritter ein und enthält keine Kontaktformulare. Es findet keine automatisierte Entscheidungsfindung einschließlich Profiling statt. Alle Inhalte der Seite werden ausschließlich vom Hosting-Server geladen.</span><span data-lang="en">This website sets no cookies, uses no analytics or audience-measurement tool, embeds no third-party media players, maps, social media widgets or content delivery networks, and contains no contact forms. No automated decision-making, including profiling, takes place. Everything on the page is served exclusively from the hosting server.</span></p>
+
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Schriftarten und Programmbibliotheken</strong><strong data-lang="en">Fonts and program libraries</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">Die verwendeten Schriftarten (Roboto Slab, IBM Plex Sans, IBM Plex Mono) werden lokal vom Server dieser Website ausgeliefert. Es besteht keine Verbindung zu Google Fonts oder einem anderen Schriftdienst. Ebenso werden die zur Darstellung benötigten Programmbibliotheken ausschließlich lokal ausgeliefert und nicht von einem externen Content Delivery Network nachgeladen. Ihre IP-Adresse wird dabei an keinen Dritten übertragen.</span><span data-lang="en">The typefaces used (Roboto Slab, IBM Plex Sans, IBM Plex Mono) are served locally from this website's own server. No connection is made to Google Fonts or any other font service. The program libraries required to render the page are likewise served exclusively from this server and are not fetched from an external content delivery network. Your IP address is not transmitted to any third party in this process.</span></p>
+
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Hosting und Server-Logfiles</strong><strong data-lang="en">Hosting and server log files</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">Die Website wird bei der Netlify, Inc., 512 2nd Street, Suite 200, San Francisco, CA 94107, USA gehostet. Beim Aufruf der Seite verarbeitet Netlify als Auftragsverarbeiter automatisch technische Zugriffsdaten, die Ihr Browser übermittelt: IP-Adresse, Datum und Uhrzeit des Zugriffs, abgerufene Datei, übertragene Datenmenge, HTTP-Statuscode, Referrer-URL sowie Browser- und Betriebssystemkennung.</span><span data-lang="en">This website is hosted by Netlify, Inc., 512 2nd Street, Suite 200, San Francisco, CA 94107, USA. When you open the page, Netlify — acting as a processor on my behalf — automatically processes the technical access data your browser transmits: IP address, date and time of access, file requested, volume of data transferred, HTTP status code, referrer URL, and browser and operating system identifiers.</span></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de"><em>Zweck und Rechtsgrundlage:</em> Die Verarbeitung ist technisch erforderlich, um die Seite auszuliefern, sowie um Betriebssicherheit und Stabilität zu gewährleisten und Missbrauch abzuwehren. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; mein berechtigtes Interesse liegt im sicheren und störungsfreien Betrieb dieses Angebots.<br /><em>Speicherdauer:</em> Die Logdaten werden nur so lange gespeichert, wie es für diese Zwecke erforderlich ist, und anschließend gelöscht. Eine Zusammenführung mit anderen Datenquellen oder eine Auswertung zu Marketingzwecken findet nicht statt.<br /><em>Auftragsverarbeitung und Drittlandtransfer:</em> Mit Netlify besteht ein Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO. Da Netlify ein US-Unternehmen ist, kann eine Übermittlung in die USA nicht ausgeschlossen werden; diese wird auf die Standardvertragsklauseln der EU-Kommission gemäß Art. 46 Abs. 2 lit. c DSGVO gestützt, ergänzt um die vertraglich vereinbarten technischen und organisatorischen Maßnahmen. Trotz dieser Garantien lässt sich ein Zugriff US-amerikanischer Behörden nicht vollständig ausschließen. Einzelheiten zur Datenverarbeitung durch Netlify: <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">netlify.com/privacy</a>.</span><span data-lang="en"><em>Purpose and legal basis:</em> This processing is technically necessary to deliver the page, to ensure operational security and stability, and to prevent misuse. The legal basis is Art. 6 (1) (f) GDPR; my legitimate interest lies in the secure and reliable operation of this website.<br /><em>Storage period:</em> Log data is retained only for as long as required for these purposes and is then deleted. It is neither combined with other data sources nor evaluated for marketing purposes.<br /><em>Processing agreement and international transfer:</em> A data processing agreement pursuant to Art. 28 GDPR is in place with Netlify. As Netlify is a US company, a transfer to the United States cannot be ruled out; such transfers are based on the European Commission's standard contractual clauses under Art. 46 (2) (c) GDPR, supplemented by the technical and organisational measures agreed contractually. Despite these safeguards, access by US authorities cannot be entirely excluded. Details on Netlify's data processing: <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">netlify.com/privacy</a>.</span></p>
+
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Kontaktaufnahme per E-Mail</strong><strong data-lang="en">Contact by e-mail</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">Die auf dieser Seite angegebene E-Mail-Adresse ist eine dienstliche Adresse der Hochschule Flensburg; für den Betrieb des Mailsystems gilt insoweit die Datenschutzerklärung der Hochschule. Wenn Sie mir schreiben, verarbeite ich Ihre Angaben (Name, E-Mail-Adresse, Inhalt der Nachricht) ausschließlich zur Bearbeitung Ihres Anliegens. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO — berechtigtes Interesse an der Beantwortung von Anfragen —, bei Anfragen zu Vorträgen oder Schulungen zusätzlich Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen). Ihre Nachricht wird gelöscht, sobald sie zur Erledigung nicht mehr erforderlich ist und keine gesetzlichen Aufbewahrungsfristen entgegenstehen.</span><span data-lang="en">The e-mail address given on this site is a work address at Flensburg University of Applied Sciences; the university's own privacy policy applies to the operation of that mail system. If you write to me, I process your details (name, e-mail address, content of your message) solely in order to deal with your enquiry. The legal basis is Art. 6 (1) (f) GDPR — legitimate interest in responding to enquiries — and, for enquiries about talks or training, additionally Art. 6 (1) (b) GDPR (pre-contractual measures). Your message is deleted as soon as it is no longer required and no statutory retention periods apply.</span></p>
+
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Externe Links</strong><strong data-lang="en">External links</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">Die Seite verlinkt auf Angebote Dritter (u. a. LinkedIn, GitHub, XING, YouTube, Spotify, Instagram, Google Scholar, ResearchGate, Netlify-Projekte, Hochschule Flensburg). Vor Ihrem Klick werden von dort keine Daten geladen. Sobald Sie einem Link folgen, verarbeitet der jeweilige Anbieter Ihre Daten in eigener Verantwortung und nach seinen eigenen Datenschutzbestimmungen; auf diese Verarbeitung habe ich keinen Einfluss.</span><span data-lang="en">This site links to third-party services (including LinkedIn, GitHub, XING, YouTube, Spotify, Instagram, Google Scholar, ResearchGate, Netlify-hosted projects and Flensburg University of Applied Sciences). Nothing is loaded from them before you click. Once you follow a link, the provider concerned processes your data on its own responsibility and under its own privacy policy; I have no influence over that processing.</span></p>
+
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Verschlüsselung</strong><strong data-lang="en">Encryption</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">Die Seite wird ausschließlich über eine TLS-verschlüsselte Verbindung (HTTPS) ausgeliefert.</span><span data-lang="en">The site is delivered exclusively over a TLS-encrypted connection (HTTPS).</span></p>
+
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Ihre Rechte</strong><strong data-lang="en">Your rights</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">Sie haben jederzeit das Recht auf Auskunft über die zu Ihrer Person verarbeiteten Daten (Art. 15 DSGVO), auf Berichtigung (Art. 16), auf Löschung (Art. 17), auf Einschränkung der Verarbeitung (Art. 18) sowie auf Datenübertragbarkeit (Art. 20). Soweit eine Verarbeitung auf Art. 6 Abs. 1 lit. f DSGVO beruht, haben Sie das Recht, aus Gründen, die sich aus Ihrer besonderen Situation ergeben, jederzeit Widerspruch einzulegen (Art. 21 DSGVO). Zur Ausübung genügt eine formlose Nachricht an die oben genannte Adresse. Die Bereitstellung von Daten ist weder gesetzlich noch vertraglich vorgeschrieben; ohne die technisch erforderlichen Zugriffsdaten kann die Seite allerdings nicht ausgeliefert werden.</span><span data-lang="en">You have the right at any time to obtain information about the data processed about you (Art. 15 GDPR), to rectification (Art. 16), to erasure (Art. 17), to restriction of processing (Art. 18) and to data portability (Art. 20). Where processing is based on Art. 6 (1) (f) GDPR, you have the right to object at any time on grounds relating to your particular situation (Art. 21 GDPR). An informal message to the address given above is sufficient to exercise these rights. Providing data is neither a statutory nor a contractual requirement; without the technically necessary access data, however, the page cannot be delivered.</span></p>
+
+    <p style="margin: 0 0 20px;"><strong data-lang="de">Beschwerderecht bei der Aufsichtsbehörde</strong><strong data-lang="en">Right to lodge a complaint</strong></p>
+    <p style="margin: 0 0 20px;"><span data-lang="de">Unbeschadet anderweitiger Rechtsbehelfe haben Sie nach Art. 77 DSGVO das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren. Zuständig ist:<br />Unabhängiges Landeszentrum für Datenschutz Schleswig-Holstein (ULD), Holstenstraße 98, 24103 Kiel, <a href="https://www.datenschutzzentrum.de" target="_blank" rel="noopener">datenschutzzentrum.de</a></span><span data-lang="en">Without prejudice to any other remedy, you have the right under Art. 77 GDPR to lodge a complaint with a data protection supervisory authority. The competent authority is:<br />Unabhängiges Landeszentrum für Datenschutz Schleswig-Holstein (ULD), Holstenstraße 98, 24103 Kiel, Germany, <a href="https://www.datenschutzzentrum.de" target="_blank" rel="noopener">datenschutzzentrum.de</a></span></p>
+
+    <p style="margin: 0; font-size: 14px; color: #7f7f7f;"><span data-lang="de">Stand: Juli 2026. Bei Änderungen an dieser Website wird diese Erklärung angepasst.</span><span data-lang="en">Last updated: July 2026. This statement will be revised if the website changes.</span></p>
+  </div>
+</main>
+</sc-if>
+
+<footer style="border-top: 1px solid #e4e4e6; background: #f4f5f7;">
+  <div style="max-width: 1120px; margin: 0 auto; padding: 32px 28px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; font-size: 14px; color: #7f7f7f;">
+    <span>© 2026 Till Albert</span>
+    <div style="display: flex; gap: 22px; margin-left: auto;">
+      <button onClick="{{ openImpressum }}" style="border: none; background: none; padding: 0; color: #595959; cursor: pointer; font: inherit;" style-hover="color: #2b2f88;">Impressum</button>
+      <button onClick="{{ openDatenschutz }}" style="border: none; background: none; padding: 0; color: #595959; cursor: pointer; font: inherit;" style-hover="color: #2b2f88;"><span data-lang="de">Datenschutz</span><span data-lang="en">Privacy</span></button>
+    </div>
+  </div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Deutsch&quot;,&quot;English&quot;],&quot;default&quot;:&quot;Deutsch&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Verhalten&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { page: 'main', lang: props.defaultLang === 'English' ? 'en' : 'de' };
+  }
+  setLang(lang) { this.setState({ lang }); }
+  go(page) { this.setState({ page }); window.scrollTo(0, 0); }
+  renderVals() {
+    return {
+      activeLang: this.state.lang,
+      showMain: this.state.page === 'main',
+      showImpressum: this.state.page === 'impressum',
+      showDatenschutz: this.state.page === 'datenschutz',
+      setDe: () => this.setLang('de'),
+      setEn: () => this.setLang('en'),
+      openImpressum: () => this.go('impressum'),
+      openDatenschutz: () => this.go('datenschutz'),
+      goHome: () => this.go('main'),
+    };
+  }
+}
+</script>
+</body>
+</html>
