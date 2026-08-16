@@ -43,12 +43,51 @@
   [data-active-lang="en"] [data-lang="en"] { display: revert; }
   [data-active-lang="en"] [data-lang="de"] { display: none; }
   [data-active-lang="de"] [data-langbtn="de"], [data-active-lang="en"] [data-langbtn="en"] { background: #f4f5f7 !important; color: #1a1a1a !important; border-color: #2b2f88 !important; }
+
+  /* ---- Layout / Responsivitaet -------------------------------------------
+     Die Spaltenaufteilung steht bewusst hier und nicht im style-Attribut:
+     Inline-Styles lassen sich von Media Queries sonst nur mit !important
+     ueberschreiben. Karten-Raster brauchen gar keinen Breakpoint, sie
+     rechnen sich ueber auto-fit selbst aus. */
+
+  /* Karten: 4 bzw. 3 Spalten am Desktop, danach automatisch weniger,
+     auf dem Telefon eine. min(100%, X) verhindert, dass eine Kachel
+     breiter wird als der Bildschirm. */
+  .g-focus { display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+  .g-games { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+
+  /* Zweispaltige Abschnitte: feste Verhaeltnisse, die unter 860px stapeln. */
+  .g-hero  { display: grid; gap: 56px; align-items: end; grid-template-columns: 1.5fr 1fr; }
+  .g-teach { display: grid; gap: 56px; grid-template-columns: 1.1fr 1fr; }
+  .g-split { display: grid; gap: 56px; grid-template-columns: 1fr 1fr; }
+
+  /* Projektzeile: Titel links, Jahresangabe rechts. */
+  .g-sum { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline; }
+
+  @media (max-width: 860px) {
+    .g-hero, .g-teach, .g-split { grid-template-columns: 1fr; gap: 40px; }
+    /* Gestapelt wuerde das Portraet sonst bildschirmbreit. */
+    .g-hero { align-items: start; }
+    .g-hero > .hero-photo { max-width: 260px; }
+  }
+
+  @media (max-width: 620px) {
+    /* Jahresangabe unter den Titel statt daneben. */
+    .g-sum { grid-template-columns: 1fr; gap: 8px; }
+    /* Zeitleiste: Jahr ueber den Eintrag. */
+    .cv-item { grid-template-columns: 1fr !important; gap: 2px !important; }
+  }
+
+  @media (max-width: 700px) {
+    .hdr { flex-wrap: wrap; gap: 10px 16px; }
+    .hdr nav { gap: 14px; font-size: 13px; margin-left: 0; }
+  }
 </style>
 </helmet>
 <div data-active-lang="{{ activeLang }}" style="max-width: 100%; overflow-x: hidden;">
 
 <header style="position: sticky; top: 0; z-index: 30; background: rgba(255,255,255,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid #e4e4e6;">
-  <div style="max-width: 1120px; margin: 0 auto; padding: 14px 28px; display: flex; align-items: center; gap: 24px;">
+  <div class="hdr" style="max-width: 1120px; margin: 0 auto; padding: 14px clamp(20px, 4vw, 28px); display: flex; align-items: center; gap: 24px;">
     <a href="#top" style="font-family: 'Roboto Slab', Georgia, serif; font-weight: 700; font-size: 17px; color: #1a1a1a; letter-spacing: -0.01em;">Till Albert</a>
     <nav style="display: flex; gap: 22px; margin-left: auto; font-size: 14px; color: #595959; flex-wrap: wrap;">
       <a href="#profil" style="color: #595959;"><span data-lang="de">Profil</span><span data-lang="en">Profile</span></a>
@@ -66,12 +105,12 @@
 </header>
 
 <sc-if value="{{ showMain }}" hint-placeholder-val="{{ true }}">
-<main id="top" style="max-width: 1120px; margin: 0 auto; padding: 0 28px 120px;">
+<main id="top" style="max-width: 1120px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 28px) 120px;">
 
-  <section style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 56px; align-items: end; padding: 96px 0 72px;">
+  <section class="g-hero" style="padding: clamp(56px, 9vw, 96px) 0 clamp(48px, 7vw, 72px);">
     <div>
       <p style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #2b2f88; margin: 0 0 22px;"><span data-lang="de">Professor für Digitalisierung · Flensburg</span><span data-lang="en">Professor of Digitalisation · Flensburg</span></p>
-      <h1 style="font-family: 'Roboto Slab', Georgia, serif; font-weight: 700; font-size: 62px; line-height: 1.02; letter-spacing: -0.025em; margin: 0 0 28px; text-wrap: balance;">Prof. Dr. Till Albert</h1>
+      <h1 style="font-family: 'Roboto Slab', Georgia, serif; font-weight: 700; font-size: clamp(34px, 8.5vw, 62px); line-height: 1.05; letter-spacing: -0.025em; margin: 0 0 28px; text-wrap: balance;">Prof. Dr. Till Albert</h1>
       <p style="font-size: 20px; line-height: 1.55; color: #404040; margin: 0 0 12px; max-width: 34em; text-wrap: pretty;"><span data-lang="de">Ich arbeite an der digitalen Transformation kleiner und mittlerer Unternehmen — zwischen Forschung, Lehre und handfesten Prototypen. Aktuell: KI-Agenten in betrieblichen Prozessen.</span><span data-lang="en">I work on the digital transformation of small and medium-sized companies — between research, teaching and hands-on prototypes. Currently: AI agents in operational business processes.</span></p>
       <p style="font-size: 16px; line-height: 1.6; color: #7f7f7f; margin: 0 0 34px; max-width: 34em; font-style: italic;"><span data-lang="de">„Wer erfolgreich digitalisieren will, muss komplexe soziotechnische Systeme verstehen.“</span><span data-lang="en">“Anyone who wants to digitalise successfully has to understand complex socio-technical systems.”</span></p>
       <div style="display: flex; flex-wrap: wrap; gap: 8px;">
@@ -82,14 +121,14 @@
         <a href="https://hs-flensburg.de/hochschule/personen/albertt" target="_blank" rel="noopener" style="border: 1px solid #e4e4e6; border-radius: 999px; padding: 8px 15px; font-size: 13px; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">Hochschule Flensburg</a>
       </div>
     </div>
-    <div style="aspect-ratio: 4/5; border: 1px solid #e4e4e6; border-radius: 12px; overflow: hidden; background: #f4f5f7;">
+    <div class="hero-photo" style="aspect-ratio: 4/5; border: 1px solid #e4e4e6; border-radius: 12px; overflow: hidden; background: #f4f5f7;">
       <img src="./Till-400x600.jpg" width="400" height="600" alt="Prof. Dr. Till Albert" style="width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block;" />
     </div>
   </section>
 
   <section id="profil" style="border-top: 1px solid #e4e4e6; padding: 64px 0;">
     <h2 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 40px;"><span data-lang="de">Schwerpunkte</span><span data-lang="en">Focus areas</span></h2>
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px;">
+    <div class="g-focus">
       <div style="border-top: 2px solid #2b2f88; padding-top: 16px;">
         <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 19px; font-weight: 600; margin: 0 0 10px; line-height: 1.25;"><span data-lang="de">Digitale Transformation</span><span data-lang="en">Digital transformation</span></h3>
         <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0;"><span data-lang="de">Soziotechnische Systeme in KMU und Familienunternehmen — von der Strategie bis in den Betrieb.</span><span data-lang="en">Socio-technical systems in SMEs and family businesses — from strategy to the shop floor.</span></p>
@@ -120,9 +159,9 @@
     <p style="font-size: 17px; color: #595959; max-width: 40em; margin: 0 0 40px; line-height: 1.6;"><span data-lang="de">Kurzfassung zuerst — für die ganze Geschichte ein Projekt aufklappen.</span><span data-lang="en">Short version first — open a project for the full story.</span></p>
 
     <details style="border-top: 1px solid #e4e4e6; padding: 22px 0;">
-      <summary style="cursor: pointer; list-style: none; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline;">
+      <summary class="g-sum" style="cursor: pointer; list-style: none;">
         <div>
-          <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 26px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em;"><span data-lang="de">KI-Agenten für einen Handwerksbetrieb</span><span data-lang="en">AI agents for a craft business</span></h3>
+          <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: clamp(21px, 3.2vw, 26px); font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em;"><span data-lang="de">KI-Agenten für einen Handwerksbetrieb</span><span data-lang="en">AI agents for a craft business</span></h3>
           <p style="font-size: 16px; color: #595959; margin: 0; max-width: 46em; line-height: 1.6;"><span data-lang="de">Laufend: Agentensysteme für interne Prozesse in einem mittelständischen Handwerksbetrieb.</span><span data-lang="en">Ongoing: agent systems for internal processes in a medium-sized craft business.</span></p>
         </div>
         <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2b2f88; letter-spacing: 0.1em;"><span data-lang="de">2025 — LAUFEND</span><span data-lang="en">2025 — ONGOING</span></span>
@@ -131,9 +170,9 @@
     </details>
 
     <details style="border-top: 1px solid #e4e4e6; padding: 22px 0;">
-      <summary style="cursor: pointer; list-style: none; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline;">
+      <summary class="g-sum" style="cursor: pointer; list-style: none;">
         <div>
-          <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 26px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em;">Sylabary</h3>
+          <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: clamp(21px, 3.2vw, 26px); font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em;">Sylabary</h3>
           <p style="font-size: 16px; color: #595959; margin: 0; max-width: 46em; line-height: 1.6;"><span data-lang="de">Aus einem groben Vorlesungstitel werden Folien, Video, Lernmaterial und Prüfungsaufgaben.</span><span data-lang="en">From a rough lecture title to slides, video, learning material and exam questions.</span></p>
         </div>
         <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2b2f88; letter-spacing: 0.1em;"><span data-lang="de">WERKZEUG</span><span data-lang="en">TOOL</span></span>
@@ -146,9 +185,9 @@
     </details>
 
     <details style="border-top: 1px solid #e4e4e6; padding: 22px 0;">
-      <summary style="cursor: pointer; list-style: none; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline;">
+      <summary class="g-sum" style="cursor: pointer; list-style: none;">
         <div>
-          <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 26px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em;"><span data-lang="de">Szenario-Technik als Scaffolding — das erste Vibe-Coding-Projekt</span><span data-lang="en">Scenario technique as a scaffold — the first vibe-coding project</span></h3>
+          <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: clamp(21px, 3.2vw, 26px); font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em;"><span data-lang="de">Szenario-Technik als Scaffolding — das erste Vibe-Coding-Projekt</span><span data-lang="en">Scenario technique as a scaffold — the first vibe-coding project</span></h3>
           <p style="font-size: 16px; color: #595959; margin: 0; max-width: 46em; line-height: 1.6;"><span data-lang="de">FutureForge, mit Steffen Cords: eine One-Page-App, die Szenario-Berichte nach Gausemeier erzeugt.</span><span data-lang="en">FutureForge, with Steffen Cords: a one-page app that generates scenario reports following Gausemeier.</span></p>
         </div>
         <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2b2f88; letter-spacing: 0.1em;"><span data-lang="de">ARCHIV</span><span data-lang="en">ARCHIVE</span></span>
@@ -162,9 +201,9 @@
     </details>
 
     <details style="border-top: 1px solid #e4e4e6; padding: 22px 0;">
-      <summary style="cursor: pointer; list-style: none; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: baseline;">
+      <summary class="g-sum" style="cursor: pointer; list-style: none;">
         <div>
-          <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 26px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em;"><span data-lang="de">Virtual Reality in KMU</span><span data-lang="en">Virtual reality in SMEs</span></h3>
+          <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: clamp(21px, 3.2vw, 26px); font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em;"><span data-lang="de">Virtual Reality in KMU</span><span data-lang="en">Virtual reality in SMEs</span></h3>
           <p style="font-size: 16px; color: #595959; margin: 0; max-width: 46em; line-height: 1.6;"><span data-lang="de">Wann lohnt sich VR für ein kleines Unternehmen — und wann nicht? Das Projekt „VR-Leitfaden“ beantwortet das mit eigenen Experimenten.</span><span data-lang="en">When is VR worth it for a small company — and when is it not? The “VR-Leitfaden” project answers that with its own experiments.</span></p>
         </div>
         <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #2b2f88; letter-spacing: 0.1em;">2024 — 2026</span>
@@ -182,7 +221,7 @@
   <section id="spiele" style="border-top: 1px solid #e4e4e6; padding: 64px 0;">
     <h2 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 12px;"><span data-lang="de">Spielbare Experimente</span><span data-lang="en">Playable experiments</span></h2>
     <p style="font-size: 17px; color: #595959; max-width: 42em; margin: 0 0 40px; line-height: 1.6;"><span data-lang="de">Jedes dieser kleinen Spiele beantwortet eine Frage zur KI-gestützten Entwicklung. Alle laufen direkt im Browser.</span><span data-lang="en">Each of these small games answers one question about AI-assisted development. All of them run in the browser.</span></p>
-    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+    <div class="g-games">
       <a href="https://glitchdungeon.netlify.app" target="_blank" rel="noopener" style="display: block; border: 1px solid #e4e4e6; border-radius: 12px; padding: 26px; background: #ffffff; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">
         <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b3e91; letter-spacing: 0.1em;">01</span>
         <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 22px; font-weight: 600; margin: 14px 0 10px;">Glitch Dungeon</h3>
@@ -221,9 +260,9 @@
 
   <section id="lehre" style="border-top: 1px solid #e4e4e6; padding: 64px 0;">
     <h2 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 12px;"><span data-lang="de">Lehre, Video &amp; Audio</span><span data-lang="en">Teaching, video &amp; audio</span></h2>
-    <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; margin-top: 32px;">
+    <div class="g-teach" style="margin-top: 32px;">
       <div>
-        <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 28px; font-weight: 600; margin: 0 0 16px; letter-spacing: -0.015em; line-height: 1.2;"><span data-lang="de">Zwanzig Jahre Inverted Classroom — und ein Studio, das in den Laptop passt</span><span data-lang="en">Twenty years of inverted classroom — and a studio that fits in a laptop</span></h3>
+        <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: clamp(23px, 3.4vw, 28px); font-weight: 600; margin: 0 0 16px; letter-spacing: -0.015em; line-height: 1.2;"><span data-lang="de">Zwanzig Jahre Inverted Classroom — und ein Studio, das in den Laptop passt</span><span data-lang="en">Twenty years of inverted classroom — and a studio that fits in a laptop</span></h3>
         <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0 0 14px;"><span data-lang="de">Der Ursprung liegt bei meinem Doktorvater Prof. Dr. Martin Möhrle, der seine Vorlesungen sehr früh im Inverted Classroom angeboten hat. Während der Corona-Jahre habe ich mein gesamtes Portfolio umgestellt und die Videos zunächst zu Hause aufgenommen.</span><span data-lang="en">The idea goes back to my doctoral supervisor Prof. Dr. Martin Möhrle, who offered his lectures in an inverted classroom format very early on. During the Corona years I converted my entire portfolio and first recorded the videos at home.</span></p>
         <p style="font-size: 16px; line-height: 1.7; color: #404040; margin: 0 0 24px;"><span data-lang="de">Inzwischen starte ich am liebsten in Sylabary — komplett lokal, mit einer agentisch arbeitenden, selbst gehosteten KI. Für Stimme und Avatar kommen ElevenLabs und HeyGen dazu, weitere Materialien entstehen mit Claude Code. Der entscheidende Gewinn: Ich muss vor keiner Aufnahme mehr „in die Maske“ — neue Inhalte lassen sich damit regelmäßig aufgreifen statt einmal pro Semester.</span><span data-lang="en">These days I prefer to start in Sylabary — entirely local, running on a self-hosted agentic AI. ElevenLabs and HeyGen come in for voice and avatar, further material is written with Claude Code. The decisive gain: I no longer have to go “into make-up” before every recording — so new content can be picked up regularly instead of once per semester.</span></p>
         <div style="display: flex; flex-wrap: wrap; gap: 10px;">
@@ -256,7 +295,7 @@
   </section>
 
   <section style="border-top: 1px solid #e4e4e6; padding: 64px 0;">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start;">
+    <div class="g-split" style="align-items: start;">
       <div>
         <h2 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 24px;"><span data-lang="de">Vorträge &amp; Schulungen</span><span data-lang="en">Talks &amp; training</span></h2>
         <p style="font-size: 20px; line-height: 1.55; color: #1a1a1a; margin: 0 0 16px; max-width: 26em; text-wrap: pretty;"><span data-lang="de">Keynotes, Podiumsdiskussionen und Inhouse-Schulungen zum Thema künstliche Intelligenz — für Unternehmen, Verbände und öffentliche Einrichtungen.</span><span data-lang="en">Keynotes, panel discussions and in-house training on artificial intelligence — for companies, associations and public institutions.</span></p>
@@ -283,15 +322,15 @@
 
   <section style="border-top: 1px solid #e4e4e6; padding: 64px 0;">
     <h2 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 40px;"><span data-lang="de">Werdegang &amp; Engagement</span><span data-lang="en">Career &amp; commitment</span></h2>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 56px;">
+    <div class="g-split">
       <ol style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 20px;">
-        <li style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #2b2f88;">seit 2019</span><span style="font-size: 16px; line-height: 1.5; color: #1a1a1a;"><span data-lang="de">Professor für Digitalisierung, Hochschule Flensburg</span><span data-lang="en">Professor of Digitalisation, Flensburg University of Applied Sciences</span></span></li>
-        <li style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2017—2019</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Professor für Unternehmensführung, Hochschule Osnabrück</span><span data-lang="en">Professor of Business Management, Osnabrück University of Applied Sciences</span></span></li>
-        <li style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2015—2017</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Manager, MHP — A Porsche Company</span><span data-lang="en">Manager, MHP — A Porsche Company</span></span></li>
-        <li style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2013—2015</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Promotion (Dr. rer. pol.) bei Prof. Dr. Martin G. Möhrle, IPMI, Universität Bremen</span><span data-lang="en">Doctorate (Dr. rer. pol.) with Prof. Dr. Martin G. Möhrle, IPMI, University of Bremen</span></span></li>
-        <li style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2011—2013</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Gründer und Partner, Mapegy GmbH, Berlin</span><span data-lang="en">Founder and partner, Mapegy GmbH, Berlin</span></span></li>
-        <li style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2009—2011</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Volkswagen AG, Konzern-Zukunftsforschung</span><span data-lang="en">Volkswagen AG, Group future research</span></span></li>
-        <li style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2001—2008</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Dipl.-Wi.-Ing., Universität Karlsruhe (TH) / heute KIT und UPM Madrid</span><span data-lang="en">Dipl.-Wi.-Ing., University of Karlsruhe (TH) / today KIT and UPM Madrid</span></span></li>
+        <li class="cv-item" style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #2b2f88;">seit 2019</span><span style="font-size: 16px; line-height: 1.5; color: #1a1a1a;"><span data-lang="de">Professor für Digitalisierung, Hochschule Flensburg</span><span data-lang="en">Professor of Digitalisation, Flensburg University of Applied Sciences</span></span></li>
+        <li class="cv-item" style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2017—2019</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Professor für Unternehmensführung, Hochschule Osnabrück</span><span data-lang="en">Professor of Business Management, Osnabrück University of Applied Sciences</span></span></li>
+        <li class="cv-item" style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2015—2017</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Manager, MHP — A Porsche Company</span><span data-lang="en">Manager, MHP — A Porsche Company</span></span></li>
+        <li class="cv-item" style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2013—2015</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Promotion (Dr. rer. pol.) bei Prof. Dr. Martin G. Möhrle, IPMI, Universität Bremen</span><span data-lang="en">Doctorate (Dr. rer. pol.) with Prof. Dr. Martin G. Möhrle, IPMI, University of Bremen</span></span></li>
+        <li class="cv-item" style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2011—2013</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Gründer und Partner, Mapegy GmbH, Berlin</span><span data-lang="en">Founder and partner, Mapegy GmbH, Berlin</span></span></li>
+        <li class="cv-item" style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2009—2011</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Volkswagen AG, Konzern-Zukunftsforschung</span><span data-lang="en">Volkswagen AG, Group future research</span></span></li>
+        <li class="cv-item" style="display: grid; grid-template-columns: 82px 1fr; gap: 18px; align-items: baseline;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7f7f7f;">2001—2008</span><span style="font-size: 16px; line-height: 1.5; color: #404040;"><span data-lang="de">Dipl.-Wi.-Ing., Universität Karlsruhe (TH) / heute KIT und UPM Madrid</span><span data-lang="en">Dipl.-Wi.-Ing., University of Karlsruhe (TH) / today KIT and UPM Madrid</span></span></li>
       </ol>
       <div style="background: #f4f5f7; border-radius: 12px; padding: 30px;">
         <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 20px; font-weight: 600; margin: 0 0 18px;"><span data-lang="de">Gremien &amp; Ehrenamt</span><span data-lang="en">Committees &amp; voluntary work</span></h3>
@@ -306,7 +345,7 @@
 
   <section id="kontakt" style="border-top: 1px solid #e4e4e6; padding: 64px 0 0;">
     <h2 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 28px;">Kontakt</h2>
-    <p style="font-family: 'Roboto Slab', Georgia, serif; font-size: 40px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 28px; line-height: 1.15;"><a href="mailto:till.albert@hs-flensburg.de">till.albert@hs-flensburg.de</a></p>
+    <p style="font-family: 'Roboto Slab', Georgia, serif; font-size: clamp(20px, 5.6vw, 40px); font-weight: 600; letter-spacing: -0.02em; margin: 0 0 28px; line-height: 1.2; overflow-wrap: break-word;"><a href="mailto:till.albert@hs-flensburg.de">till.albert@hs-flensburg.de</a></p>
     <div style="display: flex; flex-wrap: wrap; gap: 26px; font-size: 15px;">
       <a href="https://www.linkedin.com/in/tillalbert/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://github.com/Zukunftsbastler" target="_blank" rel="noopener">GitHub</a>
@@ -319,9 +358,9 @@
 </sc-if>
 
 <sc-if value="{{ showImpressum }}">
-<main style="max-width: 760px; margin: 0 auto; padding: 80px 28px 120px;">
+<main style="max-width: 760px; margin: 0 auto; padding: 80px clamp(20px, 4vw, 28px) 120px;">
   <button onClick="{{ goHome }}" style="border: none; background: none; padding: 0; margin: 0 0 30px; color: #2b2f88; cursor: pointer; font: inherit; font-size: 14px;"><span data-lang="de">← Zurück</span><span data-lang="en">← Back</span></button>
-  <h1 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 40px; font-weight: 700; margin: 0 0 32px; letter-spacing: -0.02em;">Impressum</h1>
+  <h1 style="font-family: 'Roboto Slab', Georgia, serif; font-size: clamp(28px, 6vw, 40px); font-weight: 700; margin: 0 0 32px; letter-spacing: -0.02em;">Impressum</h1>
   <div style="font-size: 16px; line-height: 1.8; color: #404040;">
     <p style="margin: 0 0 20px;"><strong data-lang="de">Angaben gemäß § 5 DDG</strong><strong data-lang="en">Information pursuant to § 5 DDG</strong></p>
     <p style="margin: 0 0 20px;">Prof. Dr. Till Albert<br />Marienkirchhof 6<br />24937 Flensburg<br />Deutschland</p>
@@ -344,9 +383,9 @@
 </sc-if>
 
 <sc-if value="{{ showDatenschutz }}">
-<main style="max-width: 760px; margin: 0 auto; padding: 80px 28px 120px;">
+<main style="max-width: 760px; margin: 0 auto; padding: 80px clamp(20px, 4vw, 28px) 120px;">
   <button onClick="{{ goHome }}" style="border: none; background: none; padding: 0; margin: 0 0 30px; color: #2b2f88; cursor: pointer; font: inherit; font-size: 14px;"><span data-lang="de">← Zurück</span><span data-lang="en">← Back</span></button>
-  <h1 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 40px; font-weight: 700; margin: 0 0 32px; letter-spacing: -0.02em;"><span data-lang="de">Datenschutz</span><span data-lang="en">Privacy policy</span></h1>
+  <h1 style="font-family: 'Roboto Slab', Georgia, serif; font-size: clamp(28px, 6vw, 40px); font-weight: 700; margin: 0 0 32px; letter-spacing: -0.02em;"><span data-lang="de">Datenschutz</span><span data-lang="en">Privacy policy</span></h1>
   <div style="font-size: 16px; line-height: 1.8; color: #404040;">
     <p style="margin: 0 0 20px;"><strong data-lang="de">Verantwortlicher</strong><strong data-lang="en">Controller</strong></p>
     <p style="margin: 0 0 20px;"><span data-lang="de">Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO) ist:<br />Prof. Dr. Till Albert, Marienkirchhof 6, 24937 Flensburg, Deutschland<br />E-Mail: <a href="mailto:till.albert@hs-flensburg.de">till.albert@hs-flensburg.de</a><br />Ein Datenschutzbeauftragter ist für dieses private Angebot gesetzlich nicht zu bestellen.</span><span data-lang="en">The controller within the meaning of the General Data Protection Regulation (GDPR) is:<br />Prof. Dr. Till Albert, Marienkirchhof 6, 24937 Flensburg, Germany<br />E-mail: <a href="mailto:till.albert@hs-flensburg.de">till.albert@hs-flensburg.de</a><br />There is no legal obligation to appoint a data protection officer for this private website.</span></p>
@@ -382,7 +421,7 @@
 </sc-if>
 
 <footer style="border-top: 1px solid #e4e4e6; background: #f4f5f7;">
-  <div style="max-width: 1120px; margin: 0 auto; padding: 32px 28px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; font-size: 14px; color: #7f7f7f;">
+  <div style="max-width: 1120px; margin: 0 auto; padding: 32px clamp(20px, 4vw, 28px); display: flex; flex-wrap: wrap; gap: 20px; align-items: center; font-size: 14px; color: #7f7f7f;">
     <span>© 2026 Till Albert</span>
     <div style="display: flex; gap: 22px; margin-left: auto;">
       <button onClick="{{ openImpressum }}" style="border: none; background: none; padding: 0; color: #595959; cursor: pointer; font: inherit;" style-hover="color: #2b2f88;">Impressum</button>
