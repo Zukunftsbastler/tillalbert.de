@@ -13,6 +13,9 @@ support.js           Laufzeit von Claude Design. Interpretiert <x-dc>,
 fonts/               Selbst gehostete Webfonts (woff2).
 vendor/              React, ReactDOM und Babel — lokal statt vom CDN.
 Till-400x600.jpg     Porträtfoto.
+games/               Vorschaubilder der Spiele als WebP (700x412).
+games/original/      Die unbeschnittenen PNG-Originale.
+
 netlify.toml         Deployment-Konfiguration (siehe unten).
 ```
 
@@ -55,6 +58,31 @@ Wenn `support.js` jemals ausgetauscht wird, muss geprüft werden, ob sich die
 erwarteten CDN-URLs geändert haben. Passt der Schlüssel in `window.__resources`
 nicht mehr zeichengenau, greift der Override still nicht mehr und die Seite lädt
 wieder von `unpkg.com` — ohne dass etwas sichtbar kaputtgeht.
+
+## Spiel-Vorschaubilder
+
+`games/*.webp` sind aus `games/original/*.png` erzeugt: mittig auf 700x412
+beschnitten (Verhaeltnis 1.699) und als WebP mit Qualitaet 82 gespeichert.
+Das drueckt die sechs Bilder von zusammen 2,8 MB auf 164 KB. Der Beschnitt
+liegt je Bild zwischen 0,4 % und 4,4 %, weil die Vorlagen leicht
+unterschiedliche Seitenverhaeltnisse hatten.
+
+Neues Bild im gleichen Format erzeugen:
+
+```bash
+python3 -c "
+from PIL import Image
+im=Image.open('games/original/NAME.png').convert('RGB'); w,h=im.size; r=w/h; T=700/412
+if r>T: n=round(h*T); im=im.crop(((w-n)//2,0,(w-n)//2+n,h))
+else:   n=round(w/T); im=im.crop((0,(h-n)//2,w,(h-n)//2+n))
+im.resize((700,412),Image.LANCZOS).save('games/NAME.webp','WEBP',quality=82,method=6)"
+```
+
+Beim Einbinden gehoert auf das Bild zwingend `height: auto`. Die HTML-Attribute
+`width`/`height` wirken sonst als Presentational Hint: `width: 100%` ueberschreibt
+nur die Breite, die Hoehe bliebe auf 412px stehen und `aspect-ratio` waere
+wirkungslos, weil dann beide Masse feststehen. Das Bild wuerde beschnitten
+statt skaliert.
 
 ## Deployment
 

@@ -78,6 +78,20 @@
     .cv-item { grid-template-columns: 1fr !important; gap: 2px !important; }
   }
 
+  /* Spiel-Kacheln: Bild randlos oben, Text darunter. Das Padding sitzt
+     deshalb am inneren Container und nicht am Link selbst. */
+  .game-card { display: flex; flex-direction: column; border: 1px solid #e4e4e6; border-radius: 12px; overflow: hidden; background: #ffffff; color: #1a1a1a; }
+  .game-card img { display: block; width: 100%; height: auto; aspect-ratio: 700 / 412; object-fit: cover; background: #f4f5f7; border-bottom: 1px solid #e4e4e6; }
+  /* height: auto ist zwingend: die HTML-Attribute width/height wirken als
+     Presentational Hint. Ohne das bliebe die Hoehe auf 412px stehen und
+     aspect-ratio waere wirkungslos, weil beide Masse definit sind. */
+  .game-body { display: flex; flex-direction: column; flex: 1; padding: 24px 26px 26px; }
+  /* Schiebt die Adresszeile aller Kacheln buendig an den unteren Rand,
+     auch wenn die Beschreibungen unterschiedlich lang sind. */
+  .game-body .game-link { margin-top: auto; padding-top: 18px; }
+  .game-soon { border: 1px dashed #e4e4e6; }
+  .game-soon img { opacity: 0.85; }
+
   @media (max-width: 700px) {
     .hdr { flex-wrap: wrap; gap: 10px 16px; }
     .hdr nav { gap: 14px; font-size: 13px; margin-left: 0; }
@@ -222,38 +236,54 @@
     <h2 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 13px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #7f7f7f; margin: 0 0 12px;"><span data-lang="de">Spielbare Experimente</span><span data-lang="en">Playable experiments</span></h2>
     <p style="font-size: 17px; color: #595959; max-width: 42em; margin: 0 0 40px; line-height: 1.6;"><span data-lang="de">Jedes dieser kleinen Spiele beantwortet eine Frage zur KI-gestützten Entwicklung. Alle laufen direkt im Browser.</span><span data-lang="en">Each of these small games answers one question about AI-assisted development. All of them run in the browser.</span></p>
     <div class="g-games">
-      <a href="https://glitchdungeon.netlify.app" target="_blank" rel="noopener" style="display: block; border: 1px solid #e4e4e6; border-radius: 12px; padding: 26px; background: #ffffff; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+      <a href="https://glitchdungeon.netlify.app" target="_blank" rel="noopener" class="game-card" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+        <img src="./games/glitchdungeon.webp" width="700" height="412" loading="lazy" decoding="async" alt="Titelbild des Spiels Glitch Dungeon" />
+        <div class="game-body">
         <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b3e91; letter-spacing: 0.1em;">01</span>
         <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 22px; font-weight: 600; margin: 14px 0 10px;">Glitch Dungeon</h3>
         <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0 0 18px;"><span data-lang="de">Taugen Code Golfing und Demoscene-Stil für Vibe Coding? Ein Dark-Fantasy-Roguelike in Vanilla JS: prozedurale Ebenen, zehn Biome — und ein Glitch, der die Welt umbaut, während man darin steht.</span><span data-lang="en">Is code golfing and demoscene style a fit for vibe coding? A dark-fantasy roguelike in vanilla JS: procedural floors, ten biomes — and a glitch that rebuilds the world while you are standing in it.</span></p>
-        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">glitchdungeon.netlify.app ↗</span>
+        <span class="game-link" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">glitchdungeon.netlify.app ↗</span></div>
       </a>
-      <a href="https://minigolf2000.netlify.app" target="_blank" rel="noopener" style="display: block; border: 1px solid #e4e4e6; border-radius: 12px; padding: 26px; background: #ffffff; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+      <a href="https://minigolf2000.netlify.app" target="_blank" rel="noopener" class="game-card" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+        <img src="./games/minigolf2000.webp" width="700" height="412" loading="lazy" decoding="async" alt="Titelbild des Spiels Minigolf 2000" />
+        <div class="game-body">
         <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b3e91; letter-spacing: 0.1em;">02</span>
         <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 22px; font-weight: 600; margin: 14px 0 10px;">Minigolf 2000</h3>
         <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0 0 18px;"><span data-lang="de">Ein vollständiges Spiel aus einem einzigen Prompt. Wie weit trägt eine gut formulierte Anweisung? Herausgekommen sind eine eigene Physik-Engine und ein Bahnformat, in das sich neue Löcher als einzelne Datei einhängen lassen.</span><span data-lang="en">A complete game from a single prompt. How far does one well-formed instruction carry? What came out was a physics engine of its own and a course format into which new holes slot as a single file.</span></p>
-        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">minigolf2000.netlify.app ↗</span>
+        <span class="game-link" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">minigolf2000.netlify.app ↗</span></div>
       </a>
-      <a href="https://seegang.netlify.app" target="_blank" rel="noopener" style="display: block; border: 1px solid #e4e4e6; border-radius: 12px; padding: 26px; background: #ffffff; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+      <a href="https://seegang.netlify.app" target="_blank" rel="noopener" class="game-card" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+        <img src="./games/seegang.webp" width="700" height="412" loading="lazy" decoding="async" alt="Titelbild des Spiels Seegang" />
+        <div class="game-body">
         <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b3e91; letter-spacing: 0.1em;">03</span>
         <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 22px; font-weight: 600; margin: 14px 0 10px;">Seegang</h3>
         <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0 0 18px;"><span data-lang="de">Mobile Games heißt: ein Daumen links, ein Daumen rechts. Ein Roguelite auf dem Radarschirm der Hafenwache — die Bordsysteme feuern selbsttätig, die eigentliche Entscheidung ist die Fahrt.</span><span data-lang="en">Mobile games means one thumb left, one thumb right. A roguelite on a harbour watch's radar screen — the onboard systems fire by themselves, the real decision is where you steer.</span></p>
-        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">seegang.netlify.app ↗</span>
+        <span class="game-link" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">seegang.netlify.app ↗</span></div>
       </a>
-      <a href="https://randomaze.netlify.app" target="_blank" rel="noopener" style="display: block; border: 1px solid #e4e4e6; border-radius: 12px; padding: 26px; background: #ffffff; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+      <a href="https://randomaze.netlify.app" target="_blank" rel="noopener" class="game-card" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+        <img src="./games/randomaze.webp" width="700" height="412" loading="lazy" decoding="async" alt="Titelbild des Spiels Randomaze" />
+        <div class="game-body">
         <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b3e91; letter-spacing: 0.1em;">04</span>
         <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 22px; font-weight: 600; margin: 14px 0 10px;">Randomaze</h3>
         <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0 0 18px;"><span data-lang="de">Experimente mit A*-Pathfinding in prozedural erzeugten Hex-Labyrinthen. Fog of War, und vor dem Start ein kurzer Blick auf die Karte — je kürzer, desto höher der Punktemultiplikator.</span><span data-lang="en">Experiments with A* path-finding in procedurally generated hex mazes. Fog of war, and a brief look at the map before the run — the shorter the look, the higher the score multiplier.</span></p>
-        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">randomaze.netlify.app ↗</span>
+        <span class="game-link" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">randomaze.netlify.app ↗</span></div>
       </a>
-      <a href="https://void-vanguard.netlify.app" target="_blank" rel="noopener" style="display: block; border: 1px solid #e4e4e6; border-radius: 12px; padding: 26px; background: #ffffff; color: #1a1a1a;" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+      <a href="https://void-vanguard.netlify.app" target="_blank" rel="noopener" class="game-card" style-hover="border-color: #2b2f88; background: #f4f5f7;">
+        <img src="./games/voidvanguard.webp" width="700" height="412" loading="lazy" decoding="async" alt="Titelbild des Spiels Void Vanguard" />
+        <div class="game-body">
         <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b3e91; letter-spacing: 0.1em;">05</span>
         <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 22px; font-weight: 600; margin: 14px 0 10px;">Void Vanguard</h3>
         <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0 0 18px;"><span data-lang="de">Wie fühlt sich ein Entity Component System an, wenn man es selbst baut? Angelehnt an Faster Than Light — wer das Original nicht kennt, wird es vermutlich zu komplex finden.</span><span data-lang="en">What does an entity component system feel like when you build one yourself? Modelled on Faster Than Light — anyone who does not know the original will probably find it too complex.</span></p>
-        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">void-vanguard.netlify.app ↗</span>
+        <span class="game-link" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #2b2f88;">void-vanguard.netlify.app ↗</span></div>
       </a>
-      <div style="border: 1px dashed #e4e4e6; border-radius: 12px; padding: 26px; display: flex; flex-direction: column; justify-content: flex-end; background: repeating-linear-gradient(135deg, #fafafb 0 10px, #ffffff 10px 20px);">
-        <p style="font-size: 15px; line-height: 1.6; color: #7f7f7f; margin: 0;"><span data-lang="de">Platz für das nächste Experiment.</span><span data-lang="en">Space for the next experiment.</span></p>
+      <div class="game-card game-soon">
+        <img src="./games/monstermaker.webp" width="700" height="412" loading="lazy" decoding="async" alt="Titelbild des Spiels MonsterMaker" />
+        <div class="game-body">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6b3e91; letter-spacing: 0.1em;">06</span>
+          <h3 style="font-family: 'Roboto Slab', Georgia, serif; font-size: 22px; font-weight: 600; margin: 14px 0 10px;">MonsterMaker</h3>
+          <p style="font-size: 15px; line-height: 1.6; color: #595959; margin: 0;"><span data-lang="de">Kann eine einzige Datenstruktur ein ganzes Spiel tragen? Ein Anatomie-Graph erzeugt Aussehen, Animation, Kampfwerte und Marktpreis — wer einer Kreatur den Arm abtrennt, ändert damit alles andere gleich mit.</span><span data-lang="en">Can a single data structure carry an entire game? An anatomy graph drives appearance, animation, combat stats and market price — sever a creature's arm and everything else changes with it.</span></p>
+          <span class="game-link" style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #7f7f7f;"><span data-lang="de">in Arbeit</span><span data-lang="en">in progress</span></span>
+        </div>
       </div>
     </div>
   </section>

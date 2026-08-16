@@ -29,6 +29,14 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Vorschaubilder tragen keine Versionsnummer im Namen. Eine Woche Cache ist
+# ein Kompromiss: schnell genug fuer wiederkehrende Besucher, aber ohne die
+# Gefahr, dass ein ausgetauschtes Bild ein Jahr lang alt bleibt.
+[[headers]]
+  for = "/games/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
 # Die Seite selbst soll sich ändern dürfen, ohne dass Besucher eine alte
 # Fassung sehen.
 [[headers]]
